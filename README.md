@@ -59,12 +59,51 @@ SENTRY_DSN=your_sentry_dsn
 
 ## 🚀 Deployment
 
-This application is optimized for Streamlit Cloud deployment:
+### Deploy to Streamlit Cloud
 
-1. Push your code to GitHub
-2. Connect to Streamlit Cloud
-3. Add your environment variables in Streamlit Cloud secrets
-4. Deploy!
+1. **Fork or Clone** this repository
+2. **Connect to Streamlit Cloud**:
+   - Go to [share.streamlit.io](https://share.streamlit.io)
+   - Connect your GitHub account
+   - Select this repository
+   - Set the main file as `app.py`
+
+3. **Configure Secrets**:
+   - In Streamlit Cloud, go to "Settings" → "Secrets"
+   - Copy the contents from `.streamlit/secrets.toml.example`
+   - Add your actual API keys and configuration values
+
+4. **Environment Variables Required**:
+   ```toml
+   FERNET_KEY = "your-base64-encoded-fernet-key"
+   GOOGLE_CLIENT_ID = "your-google-oauth-client-id"
+   GOOGLE_CLIENT_SECRET = "your-google-oauth-client-secret"
+   SENDGRID_API_KEY = "your-sendgrid-api-key"
+   OPENAI_API_KEY = "your-openai-api-key"  # Optional
+   ```
+
+5. **Deploy**: Click "Deploy" and your app will be live!
+
+### Local Development
+
+```bash
+# Clone the repository
+git clone https://github.com/deepakchoudhary-dc/Automated-Email-Sender.git
+cd Automated-Email-Sender
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your actual values
+
+# Initialize database
+python init_db.py
+
+# Run the application
+streamlit run app.py
+```
 
 ## 📊 Usage
 
