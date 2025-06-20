@@ -1,9 +1,15 @@
 import logging
 import os
 from datetime import datetime
-import sentry_sdk
-from sentry_sdk.integrations.logging import LoggingIntegration
 from dotenv import load_dotenv
+
+# Optional Sentry integration
+try:
+    import sentry_sdk
+    from sentry_sdk.integrations.logging import LoggingIntegration
+    SENTRY_AVAILABLE = True
+except ImportError:
+    SENTRY_AVAILABLE = False
 
 load_dotenv()
 
@@ -31,10 +37,9 @@ def setup_logging():
             logging.StreamHandler()  # Console output
         ]
     )
-    
-    # Setup Sentry for error monitoring (if configured)
+      # Setup Sentry for error monitoring (if configured and available)
     sentry_dsn = os.getenv('SENTRY_DSN')
-    if sentry_dsn:
+    if sentry_dsn and SENTRY_AVAILABLE:
         sentry_logging = LoggingIntegration(
             level=logging.INFO,
             event_level=logging.ERROR
@@ -46,6 +51,11 @@ def setup_logging():
             traces_sample_rate=0.1,
             environment=os.getenv('ENVIRONMENT', 'development')
         )
+        logger = logging.getLogger(__name__)
+        logger.info("Sentry error monitoring initialized")
+    elif sentry_dsn and not SENTRY_AVAILABLE:
+        logger = logging.getLogger(__name__)
+        logger.warning("Sentry DSN provided but sentry-sdk not installed. Install with: pip install sentry-sdk")
     
     # Get logger
     logger = logging.getLogger(__name__)

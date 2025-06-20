@@ -39,5 +39,8 @@ openpyxl>=3.1.5
 # AI and OpenAI integration (optional but recommended)
 openai>=1.12.0
 
+# Error monitoring (optional)
+sentry-sdk>=1.40.0
+
 # Additional utilities for better compatibility
 typing-extensions>=4.9.0

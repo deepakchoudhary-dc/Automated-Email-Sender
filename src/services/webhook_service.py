@@ -5,11 +5,20 @@ Webhook service for handling email provider callbacks (opens, clicks, bounces, e
 import json
 from datetime import datetime
 from typing import Dict, Any, Optional
-from flask import Flask, request, jsonify
 import hmac
 import hashlib
 from src.database.models import EmailLog, Campaign, Contact, db_session
 from src.utils.logger import get_logger
+
+# Optional Flask import for webhook functionality
+try:
+    from flask import Flask, request, jsonify
+    FLASK_AVAILABLE = True
+except ImportError:
+    FLASK_AVAILABLE = False
+    Flask = None
+    request = None
+    jsonify = None
 
 logger = get_logger(__name__)
 
@@ -17,6 +26,11 @@ class WebhookService:
     """Handles webhooks from email service providers"""
     
     def __init__(self):
+        if not FLASK_AVAILABLE:
+            logger.warning("Flask not available. Webhook functionality disabled. Install with: pip install flask>=3.0.2")
+            self.app = None
+            return
+            
         self.app = Flask(__name__)
         self._setup_routes()
     
