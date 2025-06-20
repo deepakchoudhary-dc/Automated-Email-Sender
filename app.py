@@ -19,7 +19,6 @@ from src.ui.dashboard import Dashboard
 from src.ui.sidebar_working import Sidebar
 from src.utils.session_state import initialize_session_state
 from src.utils.logger import setup_logging
-from src.utils.logger import setup_logging
 
 # Initialize logging
 setup_logging()
